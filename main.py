@@ -8,7 +8,7 @@ from datetime import datetime
 from urllib.parse import urlencode
 from data.load_csv import cargar_csv
 
-app = Flask(__name__, template_folder="web/templates")
+app = Flask(__name__, template_folder="web/templates", static_folder="web/static")
 app.secret_key = "987654321"  
 client = MongoClient(os.environ["MONGO_URI"])
 db = client["cherrydb"]
