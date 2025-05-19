@@ -6,6 +6,15 @@ import os
 from bson.objectid import ObjectId
 from datetime import datetime
 from urllib.parse import urlencode
+from data.load_csv import cargar_csv
+
+# Cargar CSV solo si la colección está vacía
+if db["videojuegos"].count_documents({}) == 0:
+    ruta_csv = 'data/games.csv'
+    cargar_csv(ruta_csv)
+    print("✅ Datos cargados desde CSV")
+else:
+    print("📦 Datos ya existen en la base de datos")
 
 
 app = Flask(__name__)
@@ -216,5 +225,7 @@ def delete(game_id):
     return redirect(url_for("index"))
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 10000))
+    app.run(host="0.0.0.0", port=port)
+
 
