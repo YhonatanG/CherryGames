@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+  <h2>👤 Gestión de usuarios</h2>
+
+  <!-- Formulario para agregar nuevo usuario -->
+  <form method="post" class="row g-3 mb-4">
+    <div class="col-md-4">
+      <input name="nuevo_usuario" class="form-control" placeholder="Nombre de usuario" required>
+    </div>
+    <div class="col-md-4">
+      <input name="clave" type="password" class="form-control" placeholder="Contraseña" required>
+    </div>
+    <div class="col-md-4">
+      <button class="btn btn-success">Agregar usuario</button>
+    </div>
+  </form>
+
+  <h4>Usuarios registrados:</h4>
+  <table class="table table-bordered">
+    <thead class="table-dark">
+      <tr>
+        <th>Usuario</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for u in usuarios %}
+      <tr>
+        <td>{{ u.usuario }}</td>
+        <td>
+          {% if u.usuario != "admin" and u.usuario != session.usuario %}
+          <form method="post" style="display:inline;">
+            <input type="hidden" name="borrar_usuario" value="{{ u.usuario }}">
+            <button class="btn btn-sm btn-danger" onclick="return confirm('¿Eliminar este usuario?')">Eliminar</button>
+          </form>
+          {% elif u.usuario == session.usuario %}
+            <span class="text-muted">No puedes eliminarte</span>
+          {% else %}
+            <span class="text-muted">Protegido</span>
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

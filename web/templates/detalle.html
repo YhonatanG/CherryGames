@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-5" style="background-color: #fff; padding: 30px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.05);">
+  <div class="d-flex align-items-center mb-4">
+    <h2 class="text-danger me-3">🎮 {{ juego.title }}</h2>
+    <span class="badge bg-secondary">{{ juego.release_date.strftime('%Y') if juego.release_date else 'Sin fecha' }}</span>
+  </div>
+
+  <div class="row">
+    <!-- Columna izquierda: información principal -->
+    <div class="col-md-6">
+      <ul class="list-group mb-4">
+        <li class="list-group-item"><strong>📅 Fecha de lanzamiento:</strong> {{ juego.release_date.strftime('%Y-%m-%d') if juego.release_date else 'N/A' }}</li>
+        <li class="list-group-item"><strong>👥 Equipo de desarrollo:</strong> {{ juego.team|join(', ') if juego.team else 'N/A' }}</li>
+        <li class="list-group-item"><strong>🎭 Géneros:</strong> {{ juego.genres|join(', ') if juego.genres else 'N/A' }}</li>
+        <li class="list-group-item"><strong>⭐ Puntuación:</strong> {{ juego.rating if juego.rating is not none else 'N/A' }}</li>
+        <li class="list-group-item"><strong>📝 Resumen:</strong><br>{{ juego.summary or 'N/A' }}</li>
+      </ul>
+    </div>
+
+    <!-- Columna derecha: otros campos -->
+    <div class="col-md-6">
+      {% set traducciones = {
+        "times_listed": "📌 Veces listado",
+        "number_of_reviews": "💬 Número de reseñas",
+        "plays": "🎮 Veces jugado",
+        "playing": "👾 Jugando actualmente",
+        "backlogs": "📂 En Backlog",
+        "wishlist": "🧡 En Listas de deseos",
+        "platform": "🕹️ Plataforma",
+        "developer": "🏗️ Desarrollador",
+        "publisher": "🏢 Distribuidor",
+        "esrb_rating": "🔞 Clasificación ESRB",
+        "release_year": "📆 Año de lanzamiento"
+      } %}
+      <ul class="list-group mb-4">
+        {% for clave, valor in juego.items() %}
+          {% if clave not in ['_id', 'title', 'release_date', 'team', 'genres', 'rating', 'summary', 'reviews'] %}
+            <li class="list-group-item">
+              <strong>{{ traducciones.get(clave, clave.replace('_', ' ')|capitalize) }}:</strong>
+              {% if valor is iterable and not valor|string %}
+                {{ valor|join(', ') }}
+              {% else %}
+                {{ valor }}
+              {% endif %}
+            </li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+
+  <!-- Reseñas -->
+  {% if juego.reviews %}
+    <h4 class="mt-4 text-danger">🗣️ Reseñas de usuarios</h4>
+    <ul class="list-group mb-4">
+      {% for review in juego.reviews %}
+        <li class="list-group-item">{{ review }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+
+  <!-- Botones -->
+  <div class="d-flex justify-content-between">
+    <a href="{{ url_for('index') }}" class="btn btn-outline-secondary">⬅ Volver al inicio</a>
+    <a href="{{ url_for('edit', game_id=juego._id) }}" class="btn btn-warning">✏️ Editar juego</a>
+  </div>
+</div>
+{% endblock %}

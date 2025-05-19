@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Editar Juego</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+  <div class="container mt-5">
+    <h2>✏️ Editar: {{ juego.title }}</h2>
+    <form method="post">
+      <div class="mb-3">
+        <label class="form-label">Título</label>
+        <input name="title" value="{{ juego.title }}" class="form-control" required>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Fecha de lanzamiento</label>
+        <input name="release_date" type="date"
+               value="{{ juego.release_date.strftime('%Y-%m-%d') if juego.release_date else '' }}"
+               class="form-control">
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Equipo (coma-separado)</label>
+        <input name="team" value="{{ juego.team|join(', ') }}" class="form-control">
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Rating</label>
+        <input name="rating" type="number" step="0.1" min="0" max="5"
+               value="{{ juego.rating }}"
+               class="form-control">
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Géneros (coma-separado)</label>
+        <input name="genres" value="{{ juego.genres|join(', ') }}" class="form-control">
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Resumen</label>
+        <textarea name="summary" class="form-control" rows="3">{{ juego.summary }}</textarea>
+      </div>
+      <button class="btn btn-primary">Actualizar</button>
+      <a href="{{ url_for('index') }}" class="btn btn-secondary">Cancelar</a>
+    </form>
+  </div>
+</body>
+</html>
