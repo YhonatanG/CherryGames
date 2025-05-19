@@ -10,7 +10,7 @@ def home():
 
 if __name__ == '__main__':
     # Ruta al CSV
-    ruta_csv = 'data/juegos.csv'
+    ruta_csv = 'data/games.csv'
 
     # Cargar datos del CSV si la colección está vacía
     cargar_csv(ruta_csv)
