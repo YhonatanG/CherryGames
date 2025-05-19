@@ -1,6 +1,7 @@
 import csv
 from datetime import datetime
 from pymongo import MongoClient
+import os
 import ast
 
 def convertir_k(valor):
@@ -24,7 +25,8 @@ def parsear_fecha(fecha_str):
 
 def cargar_csv(csv_file_path):
     # Conexión a MongoDB
-    client = MongoClient("mongodb://localhost:27017/")
+    mongo_uri = os.environ.get("MONGO_URI")
+    client = MongoClient(mongo_uri)
     db = client["cherrydb"]
     coleccion = db["videojuegos"]
     coleccion.delete_many({})  # Limpiar antes de insertar
