@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for
 from flask import session, flash
 from functools import wraps
 from pymongo import MongoClient
+import os
 from bson.objectid import ObjectId
 from datetime import datetime
 from urllib.parse import urlencode
@@ -9,7 +10,7 @@ from urllib.parse import urlencode
 
 app = Flask(__name__)
 app.secret_key = "987654321"  
-client = MongoClient("mongodb://localhost:27017/")
+client = MongoClient(os.environ["MONGO_URI"])
 db = client["cherrydb"]
 coleccion = db["videojuegos"]
 coleccion_usuarios = db["usuarios"]
